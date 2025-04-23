@@ -3,114 +3,1016 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Law Quiz</title>
+    <title>Corporate Law Quiz</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
             color: #333;
-            margin: 0;
-            padding: 0;
         }
-        header {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px;
+        h1 {
+            color: #2c3e50;
             text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
         }
         .quiz-container {
-            max-width: 800px;
-            margin: 20px auto;
             background-color: white;
-            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 20px;
         }
         .question {
+            font-weight: 600;
+            margin-bottom: 15px;
             font-size: 18px;
-            font-weight: bold;
-            margin: 20px 0;
+            color: #2c3e50;
         }
-        .answers {
-            margin: 10px 0;
+        .options {
+            margin-left: 20px;
         }
-        .answer-label {
-            margin: 5px 0;
-            font-size: 16px;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            font-size: 16px;
-            cursor: pointer;
+        .option {
+            margin-bottom: 10px;
+            padding: 10px;
             border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #f0f3f7;
+        }
+        .option input {
+            margin-right: 10px;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
             margin-top: 20px;
         }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
         button:hover {
-            background-color: #45a049;
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .progress {
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #7f8c8d;
+        }
+        .feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .results {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+        .score {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        .explanation {
+            margin-top: 10px;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        .category {
+            color: #3498db;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 16px;
         }
     </style>
 </head>
 <body>
-
-<header>
-    <h1>Law Quiz</h1>
-</header>
-
-<div class="quiz-container">
-    <form action="#" method="POST">
-        <!-- Question 1 -->
-        <div class="question">
-            1. Decisions passed by shareholders are known as:
+    <h1>Corporate Law Quiz</h1>
+    <div class="progress">Question <span id="current-question">1</span> of <span id="total-questions">60</span></div>
+    <div class="quiz-container">
+        <div class="category" id="question-category"></div>
+        <div class="question" id="question-text"></div>
+        <div class="options" id="options-container"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="navigation">
+            <button id="prev-btn" disabled>Previous</button>
+            <button id="next-btn">Next</button>
+            <button id="submit-btn" style="display: none;">Submit Quiz</button>
         </div>
-        <div class="answers">
-            <label class="answer-label"><input type="radio" name="q1" value="a"> a. Resolutions.</label><br>
-            <label class="answer-label"><input type="radio" name="q1" value="b"> b. Provisions.</label><br>
-            <label class="answer-label"><input type="radio" name="q1" value="c"> c. Articles.</label><br>
-            <label class="answer-label"><input type="radio" name="q1" value="d"> d. Memorandums.</label>
-        </div>
+    </div>
+    <div class="results" id="results">
+        <div class="score">Your score: <span id="final-score">0</span>/60</div>
+        <button id="restart-btn">Restart Quiz</button>
+    </div>
 
-        <!-- Question 2 -->
-        <div class="question">
-            2. Which one of the following statements is incorrect?
-        </div>
-        <div class="answers">
-            <label class="answer-label"><input type="radio" name="q2" value="a"> a. Notice of meetings must be given to every member and every director.</label><br>
-            <label class="answer-label"><input type="radio" name="q2" value="b"> b. All companies must hold annual general meetings.</label><br>
-            <label class="answer-label"><input type="radio" name="q2" value="c"> c. Directors and secretaries of public companies that fail to hold an annual general meeting are liable to a fine.</label><br>
-            <label class="answer-label"><input type="radio" name="q2" value="d"> d. The directors of a company can be required to hold a general meeting by the company's auditors if the auditors intend to resign.</label>
-        </div>
+    <script>
+        // Quiz questions data
+        const questions = [
+            {
+                category: "Company Meetings & Resolutions",
+                question: "Decisions passed by shareholders are known as:",
+                options: [
+                    "Resolutions.",
+                    "Provisions.",
+                    "Articles.",
+                    "Memorandums."
+                ],
+                answer: 0,
+                explanation: "Shareholder decisions are called resolutions, which can be ordinary (requires >50% vote) or special (requires ≥75% vote)."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "Which one of the following statements is incorrect?",
+                options: [
+                    "Notice of meetings must be given to every member and every director.",
+                    "All companies must hold annual general meetings.",
+                    "Directors and secretaries of public companies that fail to hold an annual general meeting are liable to a fine.",
+                    "The directors of a company can be required to hold a general meeting by the company's auditors if the auditors intend to resign."
+                ],
+                answer: 1,
+                explanation: "Private companies are not required to hold AGMs unless specified in their articles (Companies Act 2006, s336). Only public companies must hold AGMs."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "Which of the following meetings are all shareholders invited to? 1. annual general meeting. 2. general meeting. 3. class meeting. 4. board meeting.",
+                options: [
+                    "1 only.",
+                    "1 and 2 only.",
+                    "1, 2, and 3 only.",
+                    "1, 2, 3, and 4."
+                ],
+                answer: 1,
+                explanation: "AGMs and general meetings are for all shareholders. Class meetings are for specific share classes, and board meetings are for directors only."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "What is meant by voting by poll?",
+                options: [
+                    "Where each shareholder or his proxy present at the meeting, has one vote irrespective of the number of shares they hold.",
+                    "Where each shareholder has the right to vote in writing.",
+                    "Where the chairman of the meeting casts the final vote.",
+                    "Where each shareholder or their proxies present at the meeting use as many votes as their shareholding allows them."
+                ],
+                answer: 3,
+                explanation: "Voting by poll counts votes based on shareholding (1 share = 1 vote), unlike a show of hands where each member gets one vote regardless of shares."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "What percentage of shareholders is needed to pass special resolution?",
+                options: [
+                    "It must be unanimous.",
+                    "Not less than 90%.",
+                    "Not less than 75%.",
+                    "More than 50%."
+                ],
+                answer: 2,
+                explanation: "Special resolutions require at least 75% of votes cast (Companies Act 2006, s283). Used for major decisions like altering articles."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "Which one of the following statements is correct?",
+                options: [
+                    "Where a written resolution is proposed a copy of the resolution must always be sent by post to every shareholder.",
+                    "Only Directors can propose written resolutions.",
+                    "Only Shareholders can propose written resolutions.",
+                    "Public companies cannot pass written resolutions."
+                ],
+                answer: 3,
+                explanation: "Public companies must hold meetings for decisions (CA 2006, s281). Private companies can use written resolutions proposed by directors or shareholders (5% holding)."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "What is a derivative claim?",
+                options: [
+                    "A claim brought by a company against one of its directors for negligence, default or breach of duty or breach of trust.",
+                    "A claim brought by minority shareholders on the grounds that they have been unfairly treated by the majority of shareholders.",
+                    "Where a shareholder, in place of the company, brings a claim against a director of the company for negligence, default or breach of duty or breach of trust.",
+                    "A petition to have the company wound up."
+                ],
+                answer: 2,
+                explanation: "Derivative claims (CA 2006, Part 11) allow shareholders to sue directors on behalf of the company when the company won't act, typically for breach of duty."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "How is voluntary liquidation of a company commenced?",
+                options: [
+                    "By a Court Order.",
+                    "By an ordinary resolution of shareholders.",
+                    "By a special resolution of shareholders.",
+                    "By a decision of the Board of Directors."
+                ],
+                answer: 2,
+                explanation: "Voluntary liquidation starts with a special resolution (75% vote) under Insolvency Act 1986. Creditors' voluntary liquidation also requires creditor approval."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "Where an individual uses price-sensitive information, which has not been made public, relating to the present or future value of company securities for his own profit it is called:",
+                options: [
+                    "Wrongful trading.",
+                    "Fraudulent trading.",
+                    "Insider dealing.",
+                    "Market abuse."
+                ],
+                answer: 2,
+                explanation: "Insider dealing is prohibited under Criminal Justice Act 1993 and Market Abuse Regulation, involving trading based on non-public, price-sensitive information."
+            },
+            {
+                category: "Company Meetings & Resolutions",
+                question: "Where on winding up it is discovered that a company has been trading and at the time the director or directors knew or ought to have known that there was no reasonable prospect of the company avoiding insolvent liquidation it is known as:",
+                options: [
+                    "Wrongful trading.",
+                    "Fraudulent trading.",
+                    "Illegal dealing.",
+                    "Market abuse."
+                ],
+                answer: 0,
+                explanation: "Wrongful trading (Insolvency Act 1986, s214) occurs when directors continue trading when insolvency was inevitable, potentially making them personally liable."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "Which one of the following statements is incorrect? The statutory minimum age of a director is 18.",
+                options: [
+                    "There is no statutory maximum age for directors.",
+                    "A public limited company must have at least two directors.",
+                    "There are no legal qualifications necessary for being a director."
+                ],
+                answer: 2,
+                explanation: "Public companies must have at least two directors (CA 2006, s154). Minimum age is 16 (not 18) with no upper limit or qualification requirements."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "What is the legal minimum number of directors for a private limited company?",
+                options: [
+                    "1",
+                    "2",
+                    "5",
+                    "20"
+                ],
+                answer: 0,
+                explanation: "Private companies need only one director (CA 2006, s154). Public companies require at least two."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "What is a shadow director?",
+                options: [
+                    "A director who does not attend Board meetings",
+                    "A person who is not appointed as a director but whose directions or instructions the directors of a company follow.",
+                    "A person appointed to attend Board meetings and vote in place of a director.",
+                    "A director who has recently retired from the Board."
+                ],
+                answer: 1,
+                explanation: "Shadow directors (CA 2006, s251) are de facto directors whose instructions the board follows. They have similar legal responsibilities as formal directors."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "A shareholder who wishes to make a proposal that a director is dismissed must give the company 'special notice' of their proposal prior to the meeting. How many days notice is required for special notice?",
+                options: [
+                    "7",
+                    "14",
+                    "28",
+                    "42"
+                ],
+                answer: 2,
+                explanation: "Special notice requires 28 days (CA 2006, s312) for resolutions like removing directors or auditors. The company then gives members 21 days' notice of meeting."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "Which Act gives the court power to disqualify someone from being a director if they have been guilty of fraudulent trading or have been participating in wrongful trading?",
+                options: [
+                    "Fraudulent Trading Act 2006",
+                    "Companies Act 2006",
+                    "Insolvency Act 1986",
+                    "Company Directors Disqualification Act 1986"
+                ],
+                answer: 3,
+                explanation: "Company Directors Disqualification Act 1986 allows courts to disqualify directors (2-15 years) for unfit conduct like wrongful trading or fraud."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "Which one of the following statements is correct?",
+                options: [
+                    "A company can never have unrestricted objects.",
+                    "Where a director acts without authority from the Board of Directors, all transactions entered into with third parties will be void.",
+                    "Where a director acts outside or beyond the powers given to him by the company, all transactions entered into with third parties acting in good faith will be voidable by the company.",
+                    "Where a director acts outside or beyond the powers given to him by the company, all transactions entered into with third parties acting in good faith are deemed to be free of any limitations under the company's constitution."
+                ],
+                answer: 3,
+                explanation: "CA 2006 s40 protects third parties dealing in good faith with directors, making transactions valid even if director exceeded authority, unless the third party had actual knowledge of the limitation."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "The Companies Act 2006 ss171-177 imposes various duties on directors. Which of the following is not imposed by the Act?",
+                options: [
+                    "To promote the success of the company.",
+                    "To attend the minimum of two Board meetings annually.",
+                    "To exercise independent judgment.",
+                    "To exercise reasonable skill care and diligence."
+                ],
+                answer: 1,
+                explanation: "CA 2006 outlines 7 director duties but doesn't specify meeting attendance requirements. The duties include acting within powers, promoting company success, independent judgment, reasonable care, avoiding conflicts, and declaring interests."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "Where court action is taken against a director for breach of duty any compensation awarded by the court is payable to:",
+                options: [
+                    "The Board of Directors.",
+                    "The shareholders.",
+                    "The company.",
+                    "The creditors."
+                ],
+                answer: 2,
+                explanation: "Damages for breach of director duties are paid to the company, as the duties are owed to the company, not individual shareholders or creditors."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "In order to be a company secretary of a private limited company what qualifications must you have?",
+                options: [
+                    "A qualified UK lawyer.",
+                    "A qualified Accountant",
+                    "You need no qualifications.",
+                    "Have been a secretary of a public company for at least three years out of the last five."
+                ],
+                answer: 2,
+                explanation: "Private companies aren't required to have a secretary (CA 2006 s270), and if they do, no qualifications are mandated. Public companies must appoint a secretary with 'requisite knowledge and experience' (CA 2006 s273)."
+            },
+            {
+                category: "Directors & Company Secretaries",
+                question: "Which one of the following statements is incorrect?",
+                options: [
+                    "It is a criminal offence for anyone to knowingly or recklessly give an auditor misleading, false or deceptive information.",
+                    "An auditor has the duty to audit a company's accounts, and to report to the shareholders on whether the accounts give a true and fair view of the financial position of the company and have been properly prepared in accordance with the Companies Act 2006.",
+                    "The auditor cannot be an officer or employee of the company or in partnership with someone who is an officer or employee of the company.",
+                    "An Auditor cannot be removed before the expiry of his term of office."
+                ],
+                answer: 3,
+                explanation: "Auditors can be removed by shareholders via ordinary resolution (CA 2006 s510) with special notice, though they have rights to make representations."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "Persons who take the procedural steps to set up a company and who make business preparations for the company are known as:",
+                options: [
+                    "Directors.",
+                    "Shareholders.",
+                    "Registrars.",
+                    "Promoters."
+                ],
+                answer: 3,
+                explanation: "Promoters undertake pre-incorporation activities like drafting documents, finding directors, and making contracts for the future company. They owe fiduciary duties to the company."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "Joe and Jamel wish to form a new company, which of the following documents must be lodged with the Registrar of Companies? 1. Memorandum of Association. 2. An application for registration. 3. The share certificates 4. The appropriate fee.",
+                options: [
+                    "1, 2 and 3",
+                    "1,2, and 4",
+                    "1,3, and 4",
+                    "2,3 and 4"
+                ],
+                answer: 1,
+                explanation: "Required documents are: application (Form IN01), memorandum (statement of subscribers), articles (or default model), and fee. Share certificates are issued after incorporation."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "Under the Companies Act 2006 the document that states the subscribers wish to form a company and have agreed to become members of that company is called:",
+                options: [
+                    "The Company Articles.",
+                    "The Statement of Compliance.",
+                    "The Memorandum of Association.",
+                    "The Company Guarantee."
+                ],
+                answer: 2,
+                explanation: "Post-2006, the memorandum is a simple document where subscribers agree to form a company and take at least one share each (CA 2006 s8). It's no longer a constitutional document."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "What is the internet registry for '.uk' domain names?",
+                options: [
+                    "Companies House.",
+                    "Nominet UK.",
+                    "Dot.com UK.",
+                    "Internet Registration UK."
+                ],
+                answer: 1,
+                explanation: "Nominet UK is the official registry for .uk domain names, while Companies House handles company registrations."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "Companies set up under the provisions of the Companies Act 2006 have one major constitutional document called:",
+                options: [
+                    "The Company Constitution.",
+                    "The Memorandum of Association.",
+                    "The Articles of Association.",
+                    "The Object Clause."
+                ],
+                answer: 2,
+                explanation: "Articles of Association (CA 2006 s18) are the company's main constitutional document governing internal affairs. Since 2006, the memorandum is no longer constitutional."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "Will a court permit an alteration of a company's articles to be enforced if the alteration is to give the company the power to expel shareholders?",
+                options: [
+                    "Yes, there are no restrictions on expelling shareholders.",
+                    "Yes, provided there is a good reason and it is for the benefit of the company as a whole.",
+                    "No, the Company's Act 2006 does not permit a shareholder to be expelled from a company.",
+                    "No, the common law does not permit a shareholder to be expelled from a company."
+                ],
+                answer: 1,
+                explanation: "Courts may allow expulsion clauses if bona fide for company benefit (Allen v Gold Reefs). The power must be exercised fairly and not used oppressively against minorities."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "Which one of the following statements relating to debentures is incorrect?",
+                options: [
+                    "Debenture stock is transferable.",
+                    "A company may not purchase its own debentures.",
+                    "A debenture holder is a creditor of the company.",
+                    "A debenture is the written document issued by a company setting out the terms of a loan."
+                ],
+                answer: 1,
+                explanation: "Companies can purchase their own debentures (like bonds) unless prohibited by the debenture terms. This is different from share buybacks which have stricter rules."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "Which one of the following is not a right of a shareholder?",
+                options: [
+                    "To receive a dividend declared by the company",
+                    "To attend and vote a meetings",
+                    "To receive the company's accounts",
+                    "To manage company affairs"
+                ],
+                answer: 3,
+                explanation: "Shareholders own the company but don't manage it directly - that's the directors' role. Shareholders have rights to dividends, voting, information, etc., but not day-to-day management."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "Shares issued with special rights attached to them are known as:",
+                options: [
+                    "Ordinary shares",
+                    "Preference shares",
+                    "Rights shares",
+                    "Debenture shares"
+                ],
+                answer: 1,
+                explanation: "Preference shares typically carry priority rights to dividends or capital, often with fixed dividends but usually no voting rights except in specified circumstances."
+            },
+            {
+                category: "Company Formation & Constitution",
+                question: "What are redeemable shares?",
+                options: [
+                    "Shares that cannot be transferred on the stock market.",
+                    "Shares kept by a company to be sold at a later date.",
+                    "Shares which when issued carry a right by the company to buy them back.",
+                    "Shares that carry rights in preference to other shares."
+                ],
+                answer: 2,
+                explanation: "Redeemable shares (CA 2006 s684) are issued with agreement they may be bought back by the company, providing flexibility in capital structure. Terms must be stated in articles."
+            },
+            {
+                category: "Business Organizations",
+                question: "Which one of the following is an unincorporated organisation?",
+                options: [
+                    "General partnership.",
+                    "Limited liability partnership.",
+                    "Public limited company.",
+                    "Private limited company."
+                ],
+                answer: 0,
+                explanation: "General partnerships (Partnership Act 1890) have no separate legal identity from partners. LLPs and companies are incorporated with separate legal personality."
+            },
+            {
+                category: "Business Organizations",
+                question: "The maximum number of persons who are legally allowed to operate in a partnership is:",
+                options: [
+                    "2",
+                    "20",
+                    "There is no legal limit",
+                    "100"
+                ],
+                answer: 2,
+                explanation: "While most partnerships are small, there's no legal maximum. However, banking partnerships are limited to 10 members (Companies Act 2006)."
+            },
+            {
+                category: "Business Organizations",
+                question: "A partner who is entitled to a share of the profits from a partnership is known as:",
+                options: [
+                    "A salaried partner.",
+                    "A managing partner.",
+                    "An equity partner.",
+                    "A limited liability partner."
+                ],
+                answer: 2,
+                explanation: "Equity partners share profits and losses and have unlimited liability. Salaried partners are employees, and LLP members have limited liability."
+            },
+            {
+                category: "Business Organizations",
+                question: "The Partnership Act 1890 section 24 sets out rights of partners (in default of their own agreement). Which one of the following is not included in section 24?",
+                options: [
+                    "The right to take part in the management of the business.",
+                    "The right to a salary.",
+                    "The right to share equally in the capital and profits of the business.",
+                    "The right to be indemnified by the firm for any liabilities incurred or payments made in the course of the firm's business."
+                ],
+                answer: 1,
+                explanation: "S24 provides default rules including profit sharing, management participation, and indemnity, but not salaries - these must be agreed separately."
+            },
+            {
+                category: "Business Organizations",
+                question: "Limited liability partnerships were introduced by which Act of Parliament?",
+                options: [
+                    "Limited Partnership Act 1907.",
+                    "Limited Liability Partnership Act 2000.",
+                    "Partnership Act 2000.",
+                    "Companies Act 2006."
+                ],
+                answer: 1,
+                explanation: "LLP Act 2000 created LLPs, combining partnership flexibility with corporate limited liability. Different from limited partnerships under 1907 Act where only some partners have limited liability."
+            },
+            {
+                category: "Business Organizations",
+                question: "Which one of the following statements about limited liability partnerships (LLPs) is incorrect?",
+                options: [
+                    "An LLP has a legal personality separate from that of its members.",
+                    "The liability of each partner in an LLP is limited.",
+                    "Members of an LLP are taxed as partners.",
+                    "A limited company can convert to an LLP."
+                ],
+                answer: 3,
+                explanation: "While LLPs can convert to companies, companies cannot convert to LLPs. LLPs do provide separate legal identity, limited liability, and partnership taxation."
+            },
+            {
+                category: "Business Organizations",
+                question: "Which of the following is not a method of creating a company?",
+                options: [
+                    "A written agreement made by the directors.",
+                    "Registration under the Companies Act 2006.",
+                    "Act of Parliament.",
+                    "Grant of Royal Charter."
+                ],
+                answer: 0,
+                explanation: "Companies are created by registration (most common), Royal Charter (e.g., BBC), or Act of Parliament (e.g., nationalized industries). Directors cannot create companies by agreement."
+            },
+            {
+                category: "Business Organizations",
+                question: "A Community Interest Company (CIC) can be set up as which of the following?",
+                options: [
+                    "A private company limited by guarantee only.",
+                    "A private company limited by shares or a private company limited by guarantee only.",
+                    "A private or public company limited by shares or a private company limited by guarantee.",
+                    "None of the above, it is a type of partnership."
+                ],
+                answer: 1,
+                explanation: "CICs (under 2004 Act) are special companies with asset locks for community benefit. They can be private companies limited by shares or guarantee, but not public companies."
+            },
+            {
+                category: "Business Organizations",
+                question: "Sparkle Ltd is a private limited company limited by shares. It has one director. How many shareholders does the law require it to maintain?",
+                options: [
+                    "One provided it is a different person from the director.",
+                    "Five.",
+                    "Two.",
+                    "One, which can be the same person as the director."
+                ],
+                answer: 3,
+                explanation: "Private companies need only one member (CA 2006 s7), who can also be the sole director. The same person can hold both roles."
+            },
+            {
+                category: "Business Organizations",
+                question: "An organisation running a business has the following attributes: the assets belong to the organisation, it can create a floating charge over its assets, change in membership does not alter its existence, and members cannot transfer their interests to others. What type of organisation is it?",
+                options: [
+                    "A private limited company",
+                    "A limited liability partnership",
+                    "A general partnerships",
+                    "A public limited company"
+                ],
+                answer: 0,
+                answer: 1,
+                explanation: "This describes a company limited by guarantee (common for non-profits). Assets belong to the company, perpetual existence, floating charge possible, and interests not transferable unlike shares."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "The Sale of Goods Act 1979 and the Consumer Rights Act 2015 imply various terms into contracts for the sale of goods but what type of goods are not included under the Acts?",
+                options: [
+                    "Cars",
+                    "Crops, which are to be severed from land before sale.",
+                    "Land.",
+                    "Clothing"
+                ],
+                answer: 2,
+                explanation: "Land is excluded from goods under SGA 1979 s61. Crops to be severed are included. The Acts cover all tangible movable items."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "The Consumer Rights Act 2015 applies to what type of contracts?",
+                options: [
+                    "All contracts for the sale of goods",
+                    "Business to Business contracts and contracts between private persons for goods that can be consumed.",
+                    "Contracts made between a trader and a consumer for the supply of goods, services and digital content.",
+                    "Only contracts made over the internet."
+                ],
+                answer: 2,
+                explanation: "CRA 2015 applies to trader-consumer contracts for goods, services, and digital content. B2B contracts remain under SGA 1979 and UCTA 1977."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "Under the Sale of Goods Act 1979 which one of the following terms is not implied into contracts for the sales of goods in a private sale (between two private persons)?",
+                options: [
+                    "The seller has the right to sell.",
+                    "The goods are of satisfactory quality.",
+                    "The goods match the sample.",
+                    "The goods match their description."
+                ],
+                answer: 1,
+                explanation: "Satisfactory quality (SGA s14(2)) only applies when seller is acting in business. Private sales have implied terms on title, description, and sample (ss12-15) but not quality."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "Under the Consumer Rights Act 2015 goods supplied must be of satisfactory quality except:",
+                options: [
+                    "When they are in a sale.",
+                    "When they are second- hand.",
+                    "When the defect is drawn to the attention of the buyer.",
+                    "When they are purchased via the internet."
+                ],
+                answer: 2,
+                explanation: "CRA 2015 s9(5) states goods must be satisfactory quality unless defects were specifically brought to consumer's attention before contract or examined where consumer should have noticed defects."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "Deepa bought an electric bike from 'Great Bikes Ltd' telling the sales assistant that she knew nothing about bikes but wanted a bike suitable for riding on rough terrain. She bought the bike recommended by the assistant, however, although the bike was fine around town, the wheels and frame bent the first time she used it on rough terrain. Her action against 'Great Bikes Ltd' would be for breach of which section of the Consumer Rights Act 2015?",
+                options: [
+                    "12",
+                    "11",
+                    "10",
+                    "9"
+                ],
+                answer: 2,
+                explanation: "This would be breach of s10 - fitness for particular purpose. Deepa made her specific purpose known (rough terrain) and relied on seller's skill/judgment, creating implied term that bike would be fit for that purpose."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "Alice, the director of Webdesigns Ltd orders a purple carpet for the office from a sample which is labeled 100% wool. The carpet that is delivered is blue and 80% wool. There is a breach of which sections of the Sale of Goods Act 1979?",
+                options: [
+                    "Sections 12, 13 and 15",
+                    "Sections 14(2) and 15",
+                    "Sections 12 and 15",
+                    "Sections 13 and 15"
+                ],
+                answer: 3,
+                explanation: "Wrong color breaches s13 (description), wrong material breaches s15 (sample). S12 (title) isn't breached as seller had right to sell, and s14(2) (quality) isn't relevant as the issue is description/sample."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "Which one of the following statements is incorrect?",
+                options: [
+                    "Unascertained goods are products that have not yet been manufactured or acquired by the seller, or are unidentified.",
+                    "Specific goods are those that are identified at the time the contract of sale is made.",
+                    "Ownership of goods always passes when physical possession passes to the buyer.",
+                    "Sale of Goods Act s17 provides that the property in specific or ascertained goods passes when the parties intend it to be transferred."
+                ],
+                answer: 2,
+                explanation: "Property (ownership) passes when intended (SGA s17), which may differ from possession. For example, goods sold on retention of title clauses remain seller's property until paid for despite buyer having possession."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "A reservation of title clause is:",
+                options: [
+                    "A clause in a contract of sale retaining title of goods until payment has been made.",
+                    "A clause relating to description of goods.",
+                    "A clause that is implied into consumer contracts.",
+                    "A clause in a contract of sale stating that the contract is a business contract."
+                ],
+                answer: 0,
+                explanation: "Also called Romalpa clauses, they retain ownership with seller until payment (common in B2B). Not allowed in consumer contracts under CRA 2015 which transfers ownership on delivery."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "Under the Consumer Rights Act 2015 where there is no agreement about delivery of the good when must the trader deliver the goods to the consumer?",
+                options: [
+                    "Within 7 dates of the date of the contract.",
+                    "Without due delay and in any event within 30 days of the date of the contract.",
+                    "If there is no agreement on the date of delivery it is up to the consumer to collect the goods.",
+                    "Within 3 days but only if the goods have been paid for."
+                ],
+                answer: 1,
+                explanation: "CRA 2015 s28 requires delivery 'without undue delay and in any case not more than 30 days' unless agreed otherwise. This provides certainty for consumers."
+            },
+            {
+                category: "Sale of Goods & Consumer Rights",
+                question: "Under the Supply of Goods and Services Act 1982 the term implied into the contract that the supplier will carry out the service with reasonable case and skills is treated as a:",
+                options: [
+                    "Condition.",
+                    "Warranty.",
+                    "Innominate term.",
+                    "Representation"
+                ],
+                answer: 0,
+                explanation: "SGSA 1982 s13 implies a condition (key term) that services will be performed with reasonable care/skill. Breach allows termination and damages, unlike breach of warranty which only gives damages."
+            },
+            {
+                category: "Contract Law",
+                question: "Where an agreement is made in a social or domestic context what is the general rule relating to intention to create legal relations?",
+                options: [
+                    "The courts presume the parties intended to create legal relations.",
+                    "Social or domestic agreements are never legal binding because the parties cannot create legal relations.",
+                    "All social or domestic agreements are legally binding.",
+                    "The courts presume the parties did not intend to create legal relations."
+                ],
+                answer: 3,
+                explanation: "Social/domestic agreements (like family arrangements) are presumed not intended to be legally binding (Balfour v Balfour). This can be rebutted by evidence of contrary intention."
+            },
+            {
+                category: "Contract Law",
+                question: "Business agreements sometimes use 'honour clauses'. What does an honour clause mean in an agreement?",
+                options: [
+                    "It is a clause covering business ethics.",
+                    "The clause means that the agreement is not legally enforceable.",
+                    "The clause means that the agreement is enforceable in the courts.",
+                    "The directors of a company are personally liable for the agreement."
+                ],
+                answer: 1,
+                explanation: "Honour clauses (e.g., 'This agreement is binding in honour only') negate intention to create legal relations, making the agreement unenforceable (Rose & Frank v Crompton)."
+            },
+            {
+                category: "Contract Law",
+                question: "In which type of agreement is the intention to create legal relations presumed to exist?",
+                options: [
+                    "Agreements between friends or family.",
+                    "Commercial or business agreements.",
+                    "All written agreements.",
+                    "The intention to create legal relations is never presumed in an agreement."
+                ],
+                answer: 1,
+                explanation: "Business agreements are presumed intended to be binding (Edwards v Skyways). This presumption can be rebutted by evidence (e.g., honour clause) but starts in favor of enforceability."
+            },
+            {
+                category: "Contract Law",
+                question: "Which one of the following statements is incorrect?",
+                options: [
+                    "A contract with a minor for necessaries is binding on the minor.",
+                    "Certain types of contract are voidable by a minor.",
+                    "A loan to a minor is unenforceable.",
+                    "All contracts with minors are unenforceable in the courts."
+                ],
+                answer: 3,
+                explanation: "Minors (under 18) are bound by contracts for necessaries (sale of goods act) and beneficial service contracts (e.g., employment). Other contracts are voidable or unenforceable against them."
+            },
+            {
+                category: "Contract Law",
+                question: "What is meant by executory consideration?",
+                options: [
+                    "Consideration provided by an executor",
+                    "Where there is a promise to do something in the future.",
+                    "Where consideration has already been completed.",
+                    "The exchange of consideration."
+                ],
+                answer: 1,
+                explanation: "Executory consideration is a promise to perform in future (e.g., promise to pay for goods to be delivered). Executed consideration is when the act is completed when promise is made (e.g., reward cases)."
+            },
+            {
+                category: "Contract Law",
+                question: "Fred finds George's lost dog. George is so pleased he promises to give Fred £350. George has failed to give Fred the £350 promised. Can Fred enforce the promise?",
+                options: [
+                    "Yes, because Fred did something in return for the £350.",
+                    "Yes, because it is a unilateral contract.",
+                    "No, because the promise to pay was made after the act in returning the dog and past consideration is not good consideration.",
+                    "No, because the dog was only worth £50."
+                ],
+                answer: 2,
+                explanation: "Past consideration (act done before promise is made) is generally invalid (Re McArdle). The return of the dog wasn't done at George's request in exchange for the promise of payment."
+            },
+            {
+                category: "Contract Law",
+                question: "Which of the following statements is correct?",
+                options: [
+                    "Consideration must be of adequate value.",
+                    "Performance of a duty imposed by law is good consideration.",
+                    "Consideration must always be greater than £1.",
+                    "Consideration must be sufficient. It must have some measurable and material value."
+                ],
+                answer: 3,
+                explanation: "Consideration must be sufficient (legally recognizable) but needn't be adequate (equal value) - courts don't assess fairness. Performing existing legal duties usually isn't valid consideration."
+            },
+            {
+                category: "Contract Law",
+                question: "In which case did the court decide that the performance of existing contractual duties can sometimes amount to consideration where the promisor gains some benefit?",
+                options: [
+                    "Williams v Roffey Bros & Nicholls (Contractors) Ltd.",
+                    "Stilk v Myrick",
+                    "Foakes v Beer",
+                    "Chappell v Nestle Co Ltd."
+                ],
+                answer: 0,
+                explanation: "Williams v Roffey established that practical benefits (like timely completion) can constitute consideration for extra payment promises, modifying Stilk v Myrick's stricter approach."
+            },
+            {
+                category: "Contract Law",
+                question: "Jens agrees to pay JC Builders £5000 on completion of the building works. Before the work is completed JC Builders agree to accept an early payment of £4,000 in full settlement for the work. JC Builders have now completed the work and have demanded the extra £1,000. Are JC Builders likely to succeed in their claim?",
+                options: [
+                    "No, a promise to accept payment of a smaller sum of money than owed is enforceable in the above scenario.",
+                    "Yes, provided the agreement was in writing.",
+                    "No, because JC builders continued working after a payment was made.",
+                    "Yes, because the doctrine of promissory estoppel would apply."
+                ],
+                answer: 3,
+                explanation: "Under Foakes v Beer, part payment of debt isn't satisfaction unless there's consideration (e.g., early payment). Here, JC Builders could claim the balance unless promissory estoppel applies (but it requires clear promise and reliance)."
+            },
+            {
+                category: "Contract Law",
+                question: "Which Act of Parliament gives persons, who are not one of the parties to a contract, the right to enforce the contract in certain circumstances?",
+                options: [
+                    "Contracts Act 1999.",
+                    "Benefit of Contracts Act 1999.",
+                    "Contracts (Rights of Third Parties) Act 1999.",
+                    "Rights of Third Parties Act 1999."
+                ],
+                answer: 2,
+                explanation: "Contracts (Rights of Third Parties) Act 1999 allows third parties to enforce terms if contract expressly provides or purports to confer benefit (s1), unless parties indicated otherwise."
+            }
+        ];
 
-        <!-- Question 3 -->
-        <div class="question">
-            3. Which of the following meetings are all shareholders invited to?
-        </div>
-        <div class="answers">
-            <label class="answer-label"><input type="radio" name="q3" value="a"> 1 only.</label><br>
-            <label class="answer-label"><input type="radio" name="q3" value="b"> 1 and 2 only.</label><br>
-            <label class="answer-label"><input type="radio" name="q3" value="c"> 1, 2, and 3 only.</label><br>
-            <label class="answer-label"><input type="radio" name="q3" value="d"> 1, 2, 3, and 4.</label>
-        </div>
+        // Quiz state variables
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = Array(questions.length).fill(null);
 
-        <!-- Question 4 -->
-        <div class="question">
-            4. What is meant by voting by poll?
-        </div>
-        <div class="answers">
-            <label class="answer-label"><input type="radio" name="q4" value="a"> a. Where each shareholder or his proxy present at the meeting, has one vote irrespective of the number of shares they hold.</label><br>
-            <label class="answer-label"><input type="radio" name="q4" value="b"> b. Where each shareholder has the right to vote in writing.</label><br>
-            <label class="answer-label"><input type="radio" name="q4" value="c"> c. Where the chairman of the meeting casts the final vote.</label><br>
-            <label class="answer-label"><input type="radio" name="q4" value="d"> d. Where each shareholder or their proxies present at the meeting use as many votes as their shareholding allows them.</label>
-        </div>
+        // DOM elements
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const feedback = document.getElementById('feedback');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultsDiv = document.getElementById('results');
+        const finalScore = document.getElementById('final-score');
+        const restartBtn = document.getElementById('restart-btn');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const questionCategory = document.getElementById('question-category');
 
-        <!-- Additional Questions -->
-        <!-- Add more questions in a similar manner. For brevity, I will stop here with just 4 questions. -->
+        // Initialize quiz
+        function initQuiz() {
+            totalQuestionsSpan.textContent = questions.length;
+            showQuestion();
+        }
 
-        <button type="submit">Submit Quiz</button>
-    </form>
-</div>
+        // Display current question
+        function showQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionText.textContent = question.question;
+            questionCategory.textContent = question.category;
+            currentQuestionSpan.textContent = currentQuestionIndex + 1;
 
+            // Clear previous options
+            optionsContainer.innerHTML = '';
+
+            // Create new options
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'option';
+                radio.value = index;
+                radio.id = `option-${index}`;
+                if (userAnswers[currentQuestionIndex] === index) {
+                    radio.checked = true;
+                }
+
+                const label = document.createElement('label');
+                label.htmlFor = `option-${index}`;
+                label.textContent = option;
+
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+
+                // Add event listener to show feedback immediately on selection
+                radio.addEventListener('change', () => {
+                    userAnswers[currentQuestionIndex] = index;
+                    checkAnswer(index);
+                });
+            });
+
+            // Update navigation buttons
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === questions.length - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === questions.length - 1 ? 'inline-block' : 'none';
+
+            // Clear feedback
+            feedback.style.display = 'none';
+        }
+
+        // Check if selected answer is correct
+        function checkAnswer(selectedIndex) {
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedIndex === question.answer;
+
+            feedback.textContent = isCorrect ? 'Correct!' : 'Incorrect!';
+            feedback.className = isCorrect ? 'feedback correct' : 'feedback incorrect';
+            
+            // Add explanation if available
+            if (question.explanation) {
+                const explanation = document.createElement('div');
+                explanation.className = 'explanation';
+                explanation.textContent = question.explanation;
+                feedback.appendChild(explanation);
+            }
+            
+            feedback.style.display = 'block';
+
+            // Update score if not previously answered
+            if (userAnswers[currentQuestionIndex] === null || userAnswers[currentQuestionIndex] === undefined) {
+                if (isCorrect) {
+                    score++;
+                }
+            } else {
+                // Adjust score if changing answer
+                const previousAnswer = userAnswers[currentQuestionIndex];
+                if (previousAnswer === question.answer && !isCorrect) {
+                    score--;
+                } else if (previousAnswer !== question.answer && isCorrect) {
+                    score++;
+                }
+            }
+        }
+
+        // Navigate to next question
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            }
+        }
+
+        // Navigate to previous question
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
+        }
+
+        // Show final results
+        function showResults() {
+            document.querySelector('.quiz-container').style.display = 'none';
+            document.querySelector('.progress').style.display = 'none';
+            resultsDiv.style.display = 'block';
+            finalScore.textContent = `${score} out of ${questions.length}`;
+        }
+
+        // Restart quiz
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers = Array(questions.length).fill(null);
+            document.querySelector('.quiz-container').style.display = 'block';
+            document.querySelector('.progress').style.display = 'block';
+            resultsDiv.style.display = 'none';
+            showQuestion();
+        }
+
+        // Event listeners
+        nextBtn.addEventListener('click', nextQuestion);
+        prevBtn.addEventListener('click', prevQuestion);
+        submitBtn.addEventListener('click', showResults);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        // Initialize the quiz
+        initQuiz();
+    </script>
 </body>
 </html>
