@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Environmental Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f7f8;
+      color: #333;
+      margin: 0;
+      padding: 2rem;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .question-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .options button {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 0.75rem 1rem;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      background: white;
+      transition: 0.3s;
+    }
+    .options button.correct {
+      border-color: green;
+      background-color: #e0f7e9;
+    }
+    .options button.incorrect {
+      border-color: red;
+      background-color: #ffe6e6;
+    }
+    .options button:disabled {
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h1>Environmental Quiz</h1>
+  <div id="quiz"></div>
+
+  <script>
+    const quizData = [
+      {
+        question: "What is the primary cause of global warming?",
+        options: ["Deforestation", "Greenhouse gases", "Plastic pollution", "Ozone layer depletion"],
+        answer: "Greenhouse gases"
+      },
+      {
+        question: "Which gas is most responsible for the greenhouse effect?",
+        options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"],
+        answer: "Carbon dioxide"
+      },
+      {
+        question: "Which of the following is a renewable energy source?",
+        options: ["Coal", "Natural gas", "Solar power", "Petroleum"],
+        answer: "Solar power"
+      },
+      {
+        question: "Which sector contributes most to global CO2 emissions?",
+        options: ["Agriculture", "Transportation", "Electricity and heat production", "Construction"],
+        answer: "Electricity and heat production"
+      }
+    ];
+
+    const quizContainer = document.getElementById('quiz');
+
+    quizData.forEach((q, i) => {
+      const card = document.createElement('div');
+      card.className = 'question-card';
+
+      const questionEl = document.createElement('div');
+      questionEl.className = 'question';
+      questionEl.innerText = `${i + 1}. ${q.question}`;
+
+      const optionsEl = document.createElement('div');
+      optionsEl.className = 'options';
+
+      q.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => {
+          const isCorrect = opt === q.answer;
+          btn.classList.add(isCorrect ? 'correct' : 'incorrect');
+          [...btn.parentElement.children].forEach(b => {
+            b.disabled = true;
+            if (b.innerText === q.answer) b.classList.add('correct');
+          });
+        };
+        optionsEl.appendChild(btn);
+      });
+
+      card.appendChild(questionEl);
+      card.appendChild(optionsEl);
+      quizContainer.appendChild(card);
+    });
+  </script>
+</body>
+</html>
