@@ -3,162 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legal Quiz</title>
+    <title>Quiz</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             margin: 0;
             padding: 0;
-            background-color: #f4f7f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            width: 80%;
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: white;
+            background-color: #fff;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 600px;
         }
         h1 {
             text-align: center;
             color: #333;
         }
         .question {
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 1.2em;
+            margin: 20px 0;
         }
         .answers {
-            list-style-type: none;
-            padding: 0;
-        }
-        .answers li {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         .answer {
-            padding: 8px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
+            margin-bottom: 10px;
         }
-        .answer:hover {
-            background-color: #ddd;
-        }
-        .correct {
-            background-color: #28a745;
+        button {
+            background-color: #4CAF50;
             color: white;
-        }
-        .incorrect {
-            background-color: #dc3545;
-            color: white;
-        }
-        .feedback {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
-        }
-        .button {
-            display: block;
-            margin: 30px auto;
             padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
+            font-size: 1em;
         }
-        .button:hover {
-            background-color: #0056b3;
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Legal Quiz</h1>
-        
+        <h1>Quiz</h1>
         <!-- Question 1 -->
-        <div class="question-container">
-            <p class="question">1. Which of the following is not a required element in establishing a negligence action?</p>
-            <ul class="answers">
-                <li class="answer" data-answer="incorrect">a) Malicious intent on the part of the defendant.</li>
-                <li class="answer" data-answer="correct">b) Duty of care.</li>
-                <li class="answer" data-answer="incorrect">c) Causation.</li>
-                <li class="answer" data-answer="incorrect">d) Damage.</li>
-            </ul>
-            <p class="feedback"></p>
+        <div class="question">
+            <p>What is the capital of France?</p>
+            <div class="answers">
+                <div class="answer">
+                    <input type="radio" name="q1" value="A"> Berlin
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q1" value="B"> Madrid
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q1" value="C"> Paris
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q1" value="D"> Rome
+                </div>
+            </div>
         </div>
 
         <!-- Question 2 -->
-        <div class="question-container">
-            <p class="question">2. What are the elements required to successfully establish a claim in negligence?</p>
-            <ul class="answers">
-                <li class="answer" data-answer="correct">a) Duty of care.</li>
-                <li class="answer" data-answer="correct">b) Breach of duty.</li>
-                <li class="answer" data-answer="correct">c) Causation.</li>
-                <li class="answer" data-answer="correct">d) Damage.</li>
-            </ul>
-            <p class="feedback"></p>
+        <div class="question">
+            <p>What is the largest planet in our solar system?</p>
+            <div class="answers">
+                <div class="answer">
+                    <input type="radio" name="q2" value="A"> Earth
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q2" value="B"> Jupiter
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q2" value="C"> Saturn
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q2" value="D"> Mars
+                </div>
+            </div>
         </div>
 
         <!-- Question 3 -->
-        <div class="question-container">
-            <p class="question">3. Why did the plaintiff in Donoghue v Stevenson bring her action in tort instead of contract?</p>
-            <ul class="answers">
-                <li class="answer" data-answer="correct">a) Because she, the injured party, had not actually purchased the ginger beer herself.</li>
-                <li class="answer" data-answer="incorrect">b) Because she was a party to the contract.</li>
-                <li class="answer" data-answer="incorrect">c) Because the company was liable for all damages.</li>
-                <li class="answer" data-answer="incorrect">d) Because the contract was void.</li>
-            </ul>
-            <p class="feedback"></p>
+        <div class="question">
+            <p>What is the chemical symbol for water?</p>
+            <div class="answers">
+                <div class="answer">
+                    <input type="radio" name="q3" value="A"> CO2
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q3" value="B"> H2O
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q3" value="C"> O2
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q3" value="D"> N2
+                </div>
+            </div>
         </div>
 
         <!-- Question 4 -->
-        <div class="question-container">
-            <p class="question">4. What is required to establish that a defendant is liable for negligence?</p>
-            <ul class="answers">
-                <li class="answer" data-answer="incorrect">a) A criminal conviction.</li>
-                <li class="answer" data-answer="correct">b) A breach of the duty of care.</li>
-                <li class="answer" data-answer="incorrect">c) The intent to cause harm.</li>
-                <li class="answer" data-answer="incorrect">d) Evidence of harm to the defendant.</li>
-            </ul>
-            <p class="feedback"></p>
+        <div class="question">
+            <p>What is the fastest animal on Earth?</p>
+            <div class="answers">
+                <div class="answer">
+                    <input type="radio" name="q4" value="A"> Cheetah
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q4" value="B"> Falcon
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q4" value="C"> Lion
+                </div>
+                <div class="answer">
+                    <input type="radio" name="q4" value="D"> Tiger
+                </div>
+            </div>
         </div>
 
-        <!-- Question 5 -->
-        <div class="question-container">
-            <p class="question">5. In a negligence case, what must the plaintiff prove regarding the defendant's conduct?</p>
-            <ul class="answers">
-                <li class="answer" data-answer="incorrect">a) That the defendant acted with malicious intent.</li>
-                <li class="answer" data-answer="correct">b) That the defendant breached the duty of care.</li>
-                <li class="answer" data-answer="incorrect">c) That the defendant had prior knowledge of the harm.</li>
-                <li class="answer" data-answer="incorrect">d) That the defendant was financially liable for damages.</li>
-            </ul>
-            <p class="feedback"></p>
+        <!-- Submit Button -->
+        <div style="text-align: center;">
+            <button>Submit</button>
         </div>
-
-        <!-- Add more questions in similar format -->
-
-        <button class="button" onclick="checkAnswers()">Check Answers</button>
     </div>
-
-    <script>
-        // Function to check answers
-        function checkAnswers() {
-            const answers = document.querySelectorAll('.answer');
-            answers.forEach(answer => {
-                if (answer.dataset.answer === 'correct') {
-                    answer.classList.add('correct');
-                    answer.classList.remove('incorrect');
-                    answer.nextElementSibling.textContent = "Correct!";
-                } else {
-                    answer.classList.add('incorrect');
-                    answer.classList.remove('correct');
-                    answer.nextElementSibling.textContent = "Incorrect. Try again!";
-                }
-            });
-        }
-    </script>
 </body>
 </html>
