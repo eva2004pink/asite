@@ -934,7 +934,6 @@
     answer: 1,
     explanation: "Caparo established both: 1) Incremental approach - extending established duty categories by analogy, and 2) Three-stage test - foreseeability, proximity, and fairness (used for novel situations)."
 }
-            
         ];
 
         // Quiz state variables
@@ -996,7 +995,7 @@
 
                 // Add event listener to show feedback immediately on selection
                 radio.addEventListener('change', () => {
-                    userAnswers[currentQuestionIndex] = index;
+                    userAnswers[currentQuestionIndex] = parseInt(index);
                     checkAnswer(index);
                 });
             });
@@ -1013,6 +1012,7 @@
         // Check if selected answer is correct
         function checkAnswer(selectedIndex) {
             const question = questions[currentQuestionIndex];
+            selectedIndex = parseInt(selectedIndex);
             const isCorrect = selectedIndex === question.answer;
 
             feedback.textContent = isCorrect ? 'Correct!' : 'Incorrect!';
@@ -1027,21 +1027,17 @@
             }
             
             feedback.style.display = 'block';
+        }
 
-            // Update score if not previously answered
-            if (userAnswers[currentQuestionIndex] === null || userAnswers[currentQuestionIndex] === undefined) {
-                if (isCorrect) {
-                    score++;
-                }
-            } else {
-                // Adjust score if changing answer
-                const previousAnswer = userAnswers[currentQuestionIndex];
-                if (previousAnswer === question.answer && !isCorrect) {
-                    score--;
-                } else if (previousAnswer !== question.answer && isCorrect) {
+        // Calculate final score
+        function calculateScore() {
+            score = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] === questions[i].answer) {
                     score++;
                 }
             }
+            return score;
         }
 
         // Navigate to next question
@@ -1062,6 +1058,7 @@
 
         // Show final results
         function showResults() {
+            score = calculateScore();
             document.querySelector('.quiz-container').style.display = 'none';
             document.querySelector('.progress').style.display = 'none';
             resultsDiv.style.display = 'block';
